@@ -120,7 +120,7 @@ if __name__ == "__main__":
 	elasticpython.test_ES_connection()
 
 	# Set the number of papers to index by this migration script
-	number_of_papers_to_index = 200000
+	number_of_papers_to_index = 500000
 
 	# Retrieve the list of paper ids
 	list_of_paper_ids = get_ids(citeseerx_db_cur, number_of_papers_to_index)

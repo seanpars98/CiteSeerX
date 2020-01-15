@@ -16,7 +16,7 @@ def establish_ES_connection():
 	'''
 
 	es = Elasticsearch([{'host': 'localhost',
-						 'port': 9200
+						 'port': 9300
 						}])
 
 	return es
