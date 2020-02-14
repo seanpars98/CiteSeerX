@@ -5,13 +5,13 @@ import MySQLdb
 import elasticpython
 
 # Import MongoDB capabilities
-import mongo
+#import mongo
 
 # Import each of the schemas and associated methods for each index
 from paper import paper
 from author import author
 from cluster import cluster
-
+from monitoring import Monitor
 
 
 def get_ids(cur, n):	
@@ -122,6 +122,7 @@ if __name__ == "__main__":
 	# Set the number of papers to index by this migration script
 	number_of_papers_to_index = 1000000
 
+	moni = Monitor(66912)
 	# Retrieve the list of paper ids
 	list_of_paper_ids = get_ids(citeseerx_db_cur, number_of_papers_to_index)
 
@@ -134,6 +135,11 @@ if __name__ == "__main__":
 		# Every 100 papers print out our current progress
 		if paper_count % 100 == 0:
 			print('Total paper count: ', str(paper_count))
+		
+		# Every 10,000 papers, record the metrics we want
+		if paper_count % 10000 == 0:
+			moni.getData()
+
 
 		# Extract all the fields neccessary for the paper type from the MySQL DBs
 		paper1 = paper(paper_id)
@@ -157,4 +163,4 @@ if __name__ == "__main__":
 		# Increment counter so we can keep track of migration progress
 		paper_count += 1
 
-
+	moni.toCSV()

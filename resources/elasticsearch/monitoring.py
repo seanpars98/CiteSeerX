@@ -4,6 +4,7 @@ from pprint import pprint
 import csv
 import time
 import pandas as pd
+import pickle
 
 class Monitor:
 
@@ -33,33 +34,29 @@ class Monitor:
 
 
 	def toCSV(self):
-
+		
+		with open('cpus.p', 'wb') as f:
+			pickle.dump(self.cpu_usage, f)
+	
+		with open('mem.p', 'wb') as f:
+			pickle.dump(self.memory_usage, f)
+		
 		lines = []
 		for i in range(len(self.cpu_usage['cpu_usage'])):
 			temp = self.cpu_usage['cpu_usage'][0][0] + ',' + str(self.cpu_usage['cpu_usage'][0][1]) + ',' 
 			temp += str(self.memory_usage['memory_usage'][0][1]['percent']) + ',' + str(self.memory_usage['memory_usage'][0][1]['active']) + ',' 
 			temp += str(self.memory_usage['memory_usage'][0][1]['available']) + ',' + str(self.memory_usage['memory_usage'][0][1]['free']) + ','
 			temp += str(self.memory_usage['memory_usage'][0][1]['inactive']) + ',' + str(self.memory_usage['memory_usage'][0][1]['total']) + ','
-			temp += str(self.memory_usage['memory_usage'][0][1]['used']) + ',' + str(self.memory_usage['memory_usage'][0][1]['wired'])
+			temp += str(self.memory_usage['memory_usage'][0][1]['used'])
 			lines.append(temp)
 
 		filename = str(self.pid) + '.csv'
-
+		
 		with open(filename, 'w') as f:
 			w = csv.writer(f, delimiter=',')
 			w.writerows([x.split(',') for x in lines])
 
 		df = pd.read_csv(filename)
-		df.columns = ['timestamp', 'cpu', 'percent', 'active', 'available', 'free', 'inactive', 'total', 'used', 'wired']
+		df.columns = ['timestamp', 'cpu', 'percent', 'active', 'available', 'free', 'inactive', 'total', 'used']
 		df.to_csv(filename, index=False)
-
-
-moni = Monitor(88694)
-
-
-for i in range(10):
-	moni.getData()
-	time.sleep(1)
-
-moni.toCSV()
 

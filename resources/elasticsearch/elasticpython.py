@@ -1,6 +1,7 @@
 # Import capabilities to make HTTP requests to ElasticSearch
 import requests
 
+import zlib
 # Import ability to work with JSON objects in Python
 import json
 
@@ -15,8 +16,8 @@ def establish_ES_connection():
 
 	'''
 
-	es = Elasticsearch([{'host': 'localhost',
-						 'port': 9300
+	es = Elasticsearch([{'host': '130.203.139.151',
+						 'port': 9200
 						}])
 
 	return es
@@ -29,7 +30,7 @@ def test_ES_connection():
 
 	'''
 
-	req = requests.get('http://localhost:9200')
+	req = requests.get('http://130.203.139.151:9200')
 
 	content = req.content
 
