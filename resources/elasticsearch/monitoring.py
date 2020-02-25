@@ -43,11 +43,11 @@ class Monitor:
 		
 		lines = []
 		for i in range(len(self.cpu_usage['cpu_usage'])):
-			temp = self.cpu_usage['cpu_usage'][0][0] + ',' + str(self.cpu_usage['cpu_usage'][0][1]) + ',' 
-			temp += str(self.memory_usage['memory_usage'][0][1]['percent']) + ',' + str(self.memory_usage['memory_usage'][0][1]['active']) + ',' 
-			temp += str(self.memory_usage['memory_usage'][0][1]['available']) + ',' + str(self.memory_usage['memory_usage'][0][1]['free']) + ','
-			temp += str(self.memory_usage['memory_usage'][0][1]['inactive']) + ',' + str(self.memory_usage['memory_usage'][0][1]['total']) + ','
-			temp += str(self.memory_usage['memory_usage'][0][1]['used'])
+			temp = self.cpu_usage['cpu_usage'][i][0] + ',' + str(self.cpu_usage['cpu_usage'][i][1]) + ',' 
+			temp += str(self.memory_usage['memory_usage'][i][1]['percent']) + ',' + str(self.memory_usage['memory_usage'][i][1]['active']) + ',' 
+			temp += str(self.memory_usage['memory_usage'][i][1]['available']) + ',' + str(self.memory_usage['memory_usage'[i][1]['free']) + ','
+			temp += str(self.memory_usage['memory_usage'][i][1]['inactive']) + ',' + str(self.memory_usage['memory_usage'][i][1]['total']) + ','
+			temp += str(self.memory_usage['memory_usage'][i][1]['used'])
 			lines.append(temp)
 
 		filename = str(self.pid) + '.csv'
