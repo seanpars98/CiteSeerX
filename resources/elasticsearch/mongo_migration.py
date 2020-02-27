@@ -67,8 +67,8 @@ if __name__ == "__main__":
 
 	mongo = Mongo()
 	try:
-		mongo.establishMongoconnection()
-	else:
+		mongo.establishMongoConnection()
+	except:
 		print('Connection to Mongo could not be made')
 
 	#elasticpython.test_ES_connection()
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 	number_of_papers_to_index = 3
 
 	# Input the process ID of the MongoDB Process!
-	moni = Monitor(66912)
+	moni = Monitor(9978)
 
 	# Retrieve the list of paper ids
 	list_of_paper_ids = get_ids(citeseerx_db_cur, number_of_papers_to_index)
@@ -93,7 +93,7 @@ if __name__ == "__main__":
 			print('Total paper count: ', str(paper_count))
 		
 		# Every 10,000 papers, record the metrics we want
-		if paper_count % 10 == 0:
+		if paper_count % 1 == 0:
 			moni.getData()
 
 
@@ -115,7 +115,7 @@ if __name__ == "__main__":
 		# By using the update and upserts command in ElasticSearch, we can do this easily
 		#authorHelperUpsert(paper1, citeseerx_db_cur)
 		#clusterHelperUpsert(paper1)
-		mongo.upsertAuthor(paper1, "authors")
+		mongo.upsertAuthor(paper1, "authors", citeseerx_db_cur)
 		mongo.upsertCluster(paper1, "clusters")
 
 		# Increment counter so we can keep track of migration progress

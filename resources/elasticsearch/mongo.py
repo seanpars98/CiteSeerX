@@ -30,9 +30,10 @@ class Mongo():
 	def upsertAuthorHelper(self, collection, data):
 
 		col = self.db[collection]
-
-		dict_ = {
-
+		pprint(data)
+		print(data['papers'])
+		print(type(data['papers']))
+		response = col.update_one(
 			{
 				"author_id": data['author_id']
 			},
@@ -49,25 +50,19 @@ class Mongo():
 								},
 				"$push": 
 								{
-
-									{
-										"cluster": data['clusters'][0]
-									},
-
-									{
-										"papers": data['papers'][0]
-									}
+									"cluster": data['clusters'][0],
+									"papers": data['papers'][0]
+									
 								}
 
 							},
-			{"upsert": True}
-		}
+			upsert=True)
 
-		result = col.update_one(dict_)
+		#result = col.update_one(dict_)
 		print(result.match_count)
 		print(result.upserted_id)
 
-	def upsertAuthor(self, paper, collection):
+	def upsertAuthor(self, paper, collection, db):
 
 		for auth in paper.values_dict['authors']:
 
@@ -77,7 +72,7 @@ class Mongo():
 			author1.values_dict['name'] = auth['name']
 			author1.values_dict['papers'] = [paper.values_dict['paper_id']]
 
-			author1.authors_table_fields(citeseerx_db_cur)
+			author1.authors_table_fields(db)
 
 			self.upsertAuthorHelper(collection, author1.values_dict)
 
