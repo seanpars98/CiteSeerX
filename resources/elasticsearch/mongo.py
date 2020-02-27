@@ -27,40 +27,37 @@ class Mongo():
 		result = col.insert_one(data)
 		print('One post: {0}'.format(result.inserted_id))
 
-	def upsertAuthorHelper(self, collection, data):
+	def checkIfDocExists(self, collection, idType, idValue):
+
+		if self.db.[collection].find({idType: idValue}).count() > 0:
+			return True
+		else:
+			return False
+
+
+	def updateAuthorHelper(self, collection, data):
 
 		col = self.db[collection]
-		pprint(data)
-		print(data['papers'])
-		print(type(data['papers']))
 		response = col.update_one(
 			{
 				"author_id": data['author_id']
 			},
-
-			{
-				"$setOnInsert": {
-									"papers": [],
-									"author_id": data['author_id'],
-	            					"cluster": [],
-	            					"name": data['name'],
-									"affiliation": data['affiliation'],
-									"address": data['address'],
-									"email": data['email']
-								},
-				"$push": 
+			{	"$push": 
 								{
 									"cluster": data['clusters'][0],
 									"papers": data['papers'][0]
 									
 								}
+			})
 
-							},
-			upsert=True)
-
-		#result = col.update_one(dict_)
 		print(result.match_count)
 		print(result.upserted_id)
+
+	def insertAuthorHelper(self, collection, data):
+
+		col = self.db[collection]
+		response = col.insert_one(data)
+		print(response.)
 
 	def upsertAuthor(self, paper, collection, db):
 
@@ -74,54 +71,55 @@ class Mongo():
 
 			author1.authors_table_fields(db)
 
-			self.upsertAuthorHelper(collection, author1.values_dict)
+			# Now that author is prepared, time to switch logic depending on if the
+			# entry exists already
+			if self.checkIfDocExists("authors", "author_id", author1.values_dict['author_id']):
+				# Append paper and cluster to author entry!
+				self.updateAuthorHelper(collection, author1.values_dict)
+			else:
+				# Insert the brand new document!
+				self.insertAuthorHelper(collection, author1.values_dict)
 
+				
 
-	def upsertClusterHelper(self, collection, data):
+	def updateClusterHelper(self, collection, data):
 		col = self.db[collection]
 
-		dict_ = {
-
+		result = col(
 			{
 				"cluster_id": data['cluster_id']
 			},
-
 			{
-				"$setOnInsert": {
-									#"papers": data['papers'],
-									"cluster_id": data['cluster_id'],
-									"included_papers": [],
-									"included_authors": []
-
-								},
 				"$push": 
-								{
-
-									{
-										"included_papers": data['included_papers']
-									},
-
-									{
-										"included_authors": data['included_authors']
-									}
-								}
-
-							},
-			{"upsert": True}
-		}
+						{
+							"included_papers": data['included_papers'],
+							"included_authors": data['included_authors']
+						}
+			})
 
 		result = col.update_one(dict_)
 		print(result.match_count)
 		print(result.upserted_id)
 
+	def insertClusterHelper(self, collection, data):
 
+		col = self.db[collection]
+		response = col.insert_one(data)
+		print(response.)
 
 	def upsertCluster(self, paper, collection):
 		cluster1 = cluster(paper.values_dict['cluster'])
 		cluster1.values_dict['included_papers'] = [paper.values_dict['paper_id']]
 		list_of_author_names = [auth['name'] for auth in paper.values_dict['authors']]
 		cluster1.values_dict['included_authors'] = list_of_author_names
-		self.upsertClusterHelper(collection, cluster1.values_dict)
+
+
+		if self.checkIfDocExists("clusters", "cluster_id", cluster1.values_dict['cluster_id']):
+			# If the document exists, then append values
+			self.updateClusterHelper(collection, cluster1.values_dict)
+		else:
+			# Create the document from scratch!
+			self.insertClusterHelper(collection, cluster1.values_dict)
 
 '''
 
