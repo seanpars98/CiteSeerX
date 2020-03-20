@@ -74,7 +74,7 @@ if __name__ == "__main__":
 	#elasticpython.test_ES_connection()
 
 	# Set the number of papers to index by this migration script
-	number_of_papers_to_index = 3
+	number_of_papers_to_index = 1000000
 
 	# Input the process ID of the MongoDB Process!
 	moni = Monitor(9978)
@@ -89,11 +89,11 @@ if __name__ == "__main__":
 	for paper_id in list_of_paper_ids:
 
 		# Every 100 papers print out our current progress
-		if paper_count % 10 == 0:
+		if paper_count % 100 == 0:
 			print('Total paper count: ', str(paper_count))
 		
 		# Every 10,000 papers, record the metrics we want
-		if paper_count % 1 == 0:
+		if paper_count % 10000 == 0:
 			moni.getData()
 
 

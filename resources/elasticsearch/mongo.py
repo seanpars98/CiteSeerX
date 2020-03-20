@@ -25,11 +25,11 @@ class Mongo():
 
 		# Did not assign ID, therefore mongo will give us a generated one
 		result = col.insert_one(data)
-		print('One post: {0}'.format(result.inserted_id))
+		#print('One post: {0}'.format(result.inserted_id))
 
 	def checkIfDocExists(self, collection, idType, idValue):
-
-		if self.db.[collection].find({idType: idValue}).count() > 0:
+		#print(self.db[collection].count_documents({idType: idValue}, limit=1) != 0)
+		if self.db[collection].find({idType: idValue}).count() > 0:
 			return True
 		else:
 			return False
@@ -42,22 +42,19 @@ class Mongo():
 			{
 				"author_id": data['author_id']
 			},
-			{	"$push": 
-								{
-									"cluster": data['clusters'][0],
-									"papers": data['papers'][0]
-									
-								}
+			{	"$addToSet": { "clusters": { "$each": data['clusters'][0]},
+					       "papers": { "$each": data['papers'][0]}
+					}
 			})
 
-		print(result.match_count)
-		print(result.upserted_id)
+		#print(response.match_count)
+		#print(response.upserted_id)
 
 	def insertAuthorHelper(self, collection, data):
 
 		col = self.db[collection]
 		response = col.insert_one(data)
-		print(response.)
+		#print(response)
 
 	def upsertAuthor(self, paper, collection, db):
 
@@ -85,27 +82,24 @@ class Mongo():
 	def updateClusterHelper(self, collection, data):
 		col = self.db[collection]
 
-		result = col(
+		result = col.update_one(
 			{
 				"cluster_id": data['cluster_id']
 			},
-			{
-				"$push": 
-						{
-							"included_papers": data['included_papers'],
-							"included_authors": data['included_authors']
-						}
-			})
+			{       "$addToSet": { "included_papers": { "$each": data['included_papers']},
+                                               "included_authors": { "$each": data['included_authors']}
+                                        }
+                        })
 
-		result = col.update_one(dict_)
-		print(result.match_count)
-		print(result.upserted_id)
+		#result = col.update_one(dict_)
+		#print(result.match_count)
+		#print(result.upserted_id)
 
 	def insertClusterHelper(self, collection, data):
 
 		col = self.db[collection]
 		response = col.insert_one(data)
-		print(response.)
+		#print(response)
 
 	def upsertCluster(self, paper, collection):
 		cluster1 = cluster(paper.values_dict['cluster'])
