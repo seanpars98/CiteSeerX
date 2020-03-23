@@ -74,7 +74,7 @@ if __name__ == "__main__":
 	#elasticpython.test_ES_connection()
 
 	# Set the number of papers to index by this migration script
-	number_of_papers_to_index = 1000000
+	number_of_papers_to_index = 200000
 
 	# Input the process ID of the MongoDB Process!
 	moni = Monitor(9978)
