@@ -35,10 +35,10 @@ def connect_to_citeseerx_db():
 
 	'''
 
-	db = MySQLdb.connect(host="csxdb02.ist.psu.edu",
-                        user="csx-prod",
-                        passwd="csx-prod",
-                        db="citeseerx",
+	db = MySQLdb.connect(host="",
+                        user="",
+                        passwd="",
+                        db="",
 			charset='utf8')
 
 	return db.cursor()
@@ -51,10 +51,10 @@ def connect_to_csx_citegraph():
 
 	'''
 
-	db = MySQLdb.connect(host="csxdb02.ist.psu.edu",
-                        user="csx-prod",
-                        passwd="csx-prod",
-                        db="csx_citegraph",
+	db = MySQLdb.connect(host="",
+                        user="",
+                        passwd="",
+                        db="",
 			charset='utf8')
 
 	return db.cursor()
@@ -80,7 +80,7 @@ def authorHelperUpsert(paper, citeseerx_db_cur):
 			author1.authors_table_fields(citeseerx_db_cur)
 
 			elasticpython.update_authors_document(es, index='authors', doc_id=author1.values_dict['author_id'],
-										doc_type='author', data=author1.values_dict)
+				doc_type='author', data=author1.values_dict)
 
 
 def clusterHelperUpsert(paper):
@@ -99,7 +99,7 @@ def clusterHelperUpsert(paper):
 	cluster1.values_dict['included_authors'] = list_of_author_names
 
 	elasticpython.update_clusters_document(es, index='clusters', doc_id=cluster1.values_dict['cluster_id'],
-											doc_type='cluster', data=cluster1.values_dict)
+		doc_type='cluster', data=cluster1.values_dict)
 
 
 
@@ -151,8 +151,6 @@ if __name__ == "__main__":
 
 		# Load the paper JSON data into ElasticSearch
 		elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
-
-		# THIS IS WHERE THE MONGO INGESTION TAKES PLACE
 
 
 		# We also need to update the other indices like author and cluster

@@ -5,15 +5,12 @@ import MySQLdb
 import sys
 import time
  
-# Reload sys to make sure everything is working properly and make sure the encoding
-# is set properly to utf8
+# Reload sys and make sure the encoding is set properly to utf8
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 class paper:
-	''' Defines class paper
-	
-	'''
+
 	def __init__(self, paper_id):
 		''' Input: The specific paper ID of a paper
 			Output: None
@@ -23,40 +20,40 @@ class paper:
 		self.paper_id = paper_id
 		self.values_dict = {
 
-			"paper_id": self.paper_id,	#unique paper_id
-			"title": '',	#string of title of paper
-			"cluster": '', #clusterID
+			"paper_id": self.paper_id,	
+			"title": '',	
+			"cluster": '', 
 			"authors": [
 				{
-				"name": '', #string of authors name,
-				"author_id": '', #string of numerical value
-				"cluster": '' #cluster the author belongs to 
+				"name": '', 
+				"author_id": '', 
+				"cluster": '' 
 				}
-			], #list of dictionaries contain author name and author_id
+			], 
 			"keywords": [
 				{
-					"keyword": '', #string
-					"keyword_id": '' #string of numerical value
+					"keyword": '',
+					"keyword_id": '' 
 				}
-			], #list of dictionaries of keywords
-			"abstract": '', #string
-			"year": 0, #integer value
-			"venue": '', #string 
-			"ncites": 0, #integer value
-			"scites": 0, #integer value
-			"doi": '', #string ????????????????????????
-			"incol": None, #boolean value
-			"authorNorms": None, #???????????????????????????????
-			"text": '', #string, full text of paper to be indexed
-			"cites": [	#list of cluster_ids that this paper cites
+			], 
+			"abstract": '', 
+			"year": 0, 
+			"venue": '', 
+			"ncites": 0, 
+			"scites": 0, 
+			"doi": '', 
+			"incol": None, 
+			"authorNorms": None, 
+			"text": '',
+			"cites": [	
 					None,
 					None
 			], 
-			"citedby":[	#list of cluster_ids that cites this paper
+			"citedby":[	
 					None,
 					None
 			], 
-			"vtime": None, #string version time
+			"vtime": None, 
 
 		}
 
@@ -128,8 +125,8 @@ class paper:
 		result_tuple = cur.fetchall()
 
 		for keyword in result_tuple:
-			temp_dict = {	"keyword": str(keyword[0]), #string
-							"keyword_id": int(keyword[1]) #string of numerical value
+			temp_dict = {	"keyword": str(keyword[0]),
+							"keyword_id": int(keyword[1]) 
 						}
 			self.values_dict['keywords'].append(temp_dict)
 

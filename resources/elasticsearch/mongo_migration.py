@@ -30,10 +30,10 @@ def connect_to_citeseerx_db():
 		Method: Using the python MySQL API, establishes a connection with the citeseerx DB
 
 	'''
-	db = MySQLdb.connect(host="csxdb02.ist.psu.edu",
-                        user="csx-prod",
-                        passwd="csx-prod",
-                        db="citeseerx",
+	db = MySQLdb.connect(host="",
+                        user="",
+                        passwd="",
+                        db="",
 			charset='utf8')
 
 	return db.cursor()
@@ -44,10 +44,10 @@ def connect_to_csx_citegraph():
 		Method: Using the python MySQL API, connects to the csx_citegraph database
 
 	'''
-	db = MySQLdb.connect(host="csxdb02.ist.psu.edu",
-                        user="csx-prod",
-                        passwd="csx-prod",
-                        db="csx_citegraph",
+	db = MySQLdb.connect(host="",
+                        user="",
+                        passwd="",
+                        db="",
 			charset='utf8')
 	return db.cursor()
 
@@ -70,8 +70,6 @@ if __name__ == "__main__":
 		mongo.establishMongoConnection()
 	except:
 		print('Connection to Mongo could not be made')
-
-	#elasticpython.test_ES_connection()
 
 	# Set the number of papers to index by this migration script
 	number_of_papers_to_index = 200000

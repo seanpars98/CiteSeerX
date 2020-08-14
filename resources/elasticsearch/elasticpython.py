@@ -31,11 +31,8 @@ def test_ES_connection():
 	'''
 
 	req = requests.get('http://130.203.139.151:9200')
-
 	content = req.content
-
 	parsed = json.loads(content)
-
 	print_response(parsed)
 
 
@@ -63,15 +60,15 @@ def update_authors_document(es, index, doc_id, doc_type, data):
 	
 	new_data = {}
 
-
+	source = "ctx._source.papers.add(params.new_papers); ctx._source.papers.add(params.new_clusters)"
 	# We also need to add a script to the JSON to check and add the associated data appropriately
 	new_data['script'] = {
-					"source": "ctx._source.papers.add(params.new_papers); ctx._source.papers.add(params.new_clusters)",
-					"lang": "painless",
-					"params": {
-						"new_papers": data['papers'][0],
-						"new_clusters": data['clusters'][0]
-					}
+			"source": source,
+			"lang": "painless",
+			"params": {
+				"new_papers": data['papers'][0],
+				"new_clusters": data['clusters'][0]
+			}
 	 }
 
 	new_data['upsert'] = {
@@ -103,13 +100,14 @@ def update_clusters_document(es, index, doc_id, doc_type, data):
 
 	new_data = {}
 
+	source = "ctx._source.included_papers.add(params.new_papers); ctx._source.included_authors.add(params.new_authors)"
 	new_data['script'] = {
-					"source": "ctx._source.included_papers.add(params.new_papers); ctx._source.included_authors.add(params.new_authors)",
-					"lang": "painless",
-					"params": {
-						"new_papers": data['included_papers'][0],
-						"new_authors": data['included_authors']
-					}
+			"source": source,
+			"lang": "painless",
+			"params": {
+				"new_papers": data['included_papers'][0],
+				"new_authors": data['included_authors']
+			}
 	}
 
 

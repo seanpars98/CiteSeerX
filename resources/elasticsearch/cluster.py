@@ -11,23 +11,14 @@ class cluster:
 		self.cluster_id = cluster_id
 		self.values_dict = {
 
-			"cluster_id": self.cluster_id, #unique cluster ID
-			"included_papers": [ #list of paper_ids which are included in this cluster
+			"cluster_id": self.cluster_id, 
+			"included_papers": [ 
 				None,
 				None
 			],
-			"included_authors": [ #list of authors included in this cluster
+			"included_authors": [ 
 				None,
 				None
 			]
 
 		}
-
-
-        
-
-
-
-
-
-

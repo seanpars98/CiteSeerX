@@ -10,17 +10,17 @@ class author:
 		self.author_id = author_id
 		self.values_dict = {
 
-			"author_id": self.author_id, #disambiguated author ID
-			"name": None, #name of the author
-			"clusters": [ #list of cluster_ids which include this author name
+			"author_id": self.author_id, 
+			"name": None,
+			"clusters": [ 
 				
 			],
-			"papers": [ #list of paper_ids that this author has written
+			"papers": [ 
 				
 			],
-			"affiliation": None, #the department or affiliation of author
-			"address": None, #address of the author
-			"email": None #email address of the author
+			"affiliation": None, 
+			"address": None, 
+			"email": None 
 
 		}
 
@@ -44,9 +44,4 @@ class author:
 		self.values_dict['affiliation'] = result_tuple[0]
 		self.values_dict['address'] = result_tuple[1]
 		self.values_dict['email'] = result_tuple[2]
-
-
-
-
-
 
